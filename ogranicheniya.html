@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ограничения — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-tag{font-size:13px;color:var(--gold);border:0.5px solid rgba(201,168,76,0.5);border-radius:10px;padding:4px 14px;letter-spacing:0.08em}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3.5rem 2.5rem 3rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1rem}
+.page-num{font-size:72px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(28px,4vw,44px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:17px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.6;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2.5rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem}
+.sec-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.eye-line{width:20px;height:2px;background:var(--gold)}
+.eye-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark)}
+.topic-card{background:var(--white);border:0.5px solid var(--border-strong);border-radius:10px;overflow:hidden;margin-bottom:1.5rem;transition:box-shadow .2s}
+.topic-card:hover{box-shadow:0 4px 24px rgba(15,31,61,0.08)}
+.topic-card-inner{display:grid;grid-template-columns:280px 1fr;min-height:200px}
+@media(max-width:700px){.topic-card-inner{grid-template-columns:1fr}}
+.topic-left{background:var(--navy);padding:2rem;display:flex;flex-direction:column;justify-content:space-between}
+.topic-left-num{font-size:48px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1}
+.topic-left-title{font-size:20px;font-weight:600;color:#f5f0e8;line-height:1.25;margin-top:auto}
+.topic-left-sub{font-size:12px;color:rgba(201,168,76,0.7);letter-spacing:0.06em;text-transform:uppercase;margin-top:0.4rem}
+.topic-right{padding:2rem;display:flex;flex-direction:column;justify-content:space-between;gap:1.25rem}
+.topic-desc{font-size:15px;color:var(--text-muted);line-height:1.75}
+.topic-desc strong{color:var(--navy);font-weight:600}
+.tags-row{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-size:13px;padding:5px 12px;border-radius:4px;background:var(--cream);border:0.5px solid var(--border);color:var(--text-mid)}
+.topic-footer{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:0.5px solid var(--border)}
+.read-more{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--gold-dark);text-decoration:none;transition:gap .2s}
+.read-more:hover{gap:12px}
+.topic-count{font-size:12px;color:var(--text-muted);letter-spacing:0.04em}
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/><circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/><line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/></svg></div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <span class="header-tag">2026</span>
+  </div>
+</header>
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn active"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn"><span class="nav-num">05</span> Развитие</a>
+  </div>
+</div>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Ограничения</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">04</div>
+      <div>
+        <div class="page-eyebrow">Раздел четвърти</div>
+        <div class="page-title">Предизвикателства и рискове</div>
+      </div>
+    </div>
+    <div class="page-desc">Въпреки значителния си потенциал, внедряването на изкуствения интелект в противодействието на корупцията поставя редица технически, етични и институционални предизвикателства, които изискват строг човешки надзор и холистичен подход.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+<main>
+  <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Три подтеми</span></div>
+
+  <div class="topic-card">
+    <div class="topic-card-inner">
+      <div class="topic-left">
+        <div class="topic-left-num">01</div>
+        <div>
+          <div class="topic-left-title">Технически бариери</div>
+          <div class="topic-left-sub">Данни · Инфраструктура · Алгоритми</div>
+        </div>
+      </div>
+      <div class="topic-right">
+        <div class="topic-desc">Техническите бариери обхващат критични проблеми с качеството на данните, инфраструктурата и самата природа на алгоритмите. <strong>„Данните са горивото на изкуствения интелект"</strong> — непълните или неактуални данни водят до неточни резултати, а проблемът с „черната кутия" затруднява правното използване на алгоритмичните изводи.</div>
+        <div>
+          <div class="tags-row">
+            <span class="tag">Качество на данните</span>
+            <span class="tag">Алгоритмично пристрастие</span>
+            <span class="tag">Проблемът „черна кутия"</span>
+          </div>
+          <div class="topic-footer">
+            <a href="tehnicheski-barieri.html" class="read-more">Прочети повече →</a>
+            <span class="topic-count">5 бариери · практически решения</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-card-inner">
+      <div class="topic-left">
+        <div class="topic-left-num">02</div>
+        <div>
+          <div class="topic-left-title">Етични и правни рискове</div>
+          <div class="topic-left-sub">Справедливост · Права · Отговорност</div>
+        </div>
+      </div>
+      <div class="topic-right">
+        <div class="topic-desc">Етичните и правните рискове засягат справедливостта, доверието в институциите и защитата на индивидуалните права. Особено тревожно е <strong>„корупционното използване на изкуствения интелект"</strong> — умишлена злоупотреба от страна на овластени лица, при която манипулираните алгоритми изглеждат обективни, но обслужват частни интереси.</div>
+        <div>
+          <div class="tags-row">
+            <span class="tag">Поверителност на данните</span>
+            <span class="tag">Корупционно използване на ИИ</span>
+            <span class="tag">Липса на обяснимост</span>
+            <span class="tag">Правна допустимост</span>
+          </div>
+          <div class="topic-footer">
+            <a href="etichni-riskove.html" class="read-more">Прочети повече →</a>
+            <span class="topic-count">5 рискови категории</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-card-inner">
+      <div class="topic-left">
+        <div class="topic-left-num">03</div>
+        <div>
+          <div class="topic-left-title">Институционални ограничения</div>
+          <div class="topic-left-sub">Капацитет · Култура · Регулация</div>
+        </div>
+      </div>
+      <div class="topic-right">
+        <div class="topic-desc">Институционалните ограничения произтичат от <strong>"структурни, културни и организационни дефицити"</strong>. Проявления като технологична апатия в рамките на антикорупционните структури, нормативно изоставане и липса на специализирани умения се явяват основните катализатори на риск за успешната технологична интеграция.</div>
+        <div>
+          <div class="tags-row">
+            <span class="tag">Липса на технически умения</span>
+            <span class="tag">Регулаторно изоставане</span>
+            <span class="tag">Устойчиво финансиране</span>
+          </div>
+          <div class="topic-footer">
+            <a href="institucionalni.html" class="read-more">Прочети повече →</a>
+            <span class="topic-count">5 институционални предизвикателства</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="predimstva.html" class="bnav-btn">← Предимства</a>
+    <a href="razvitie.html" class="bnav-btn next">Развитие →</a>
+  </div>
+</main>
+<footer>Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026</footer>
+</body>
+</html>

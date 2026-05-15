@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тактики за колизия — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-tag{font-size:13px;color:var(--gold);border:0.5px solid rgba(201,168,76,0.5);border-radius:10px;padding:4px 14px;letter-spacing:0.08em}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3rem 2.5rem 2.75rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none;transition:color .15s}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:0.75rem}
+.page-num{font-size:64px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(24px,3.5vw,38px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:16px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.65;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem;display:grid;grid-template-columns:1fr 300px;gap:2.5rem;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.sec-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.eye-line{width:20px;height:2px;background:var(--gold)}
+.eye-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark)}
+.tactic-block{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.75rem;margin-bottom:1.25rem;border-left:3px solid var(--gold)}
+.tactic-header{display:flex;align-items:center;gap:12px;margin-bottom:0.9rem}
+.tactic-num{font-size:11px;font-weight:600;color:var(--gold-dark);background:var(--gold-light);padding:3px 10px;border-radius:3px;letter-spacing:0.06em}
+.tactic-title{font-size:17px;font-weight:600;color:var(--navy)}
+.tactic-desc{font-size:15px;color:var(--text-muted);line-height:1.75}
+.tactic-desc strong{color:var(--navy);font-weight:600}
+.ai-section{background:var(--navy);border-radius:10px;padding:2rem;margin-top:2rem;margin-bottom:1.25rem}
+.ai-section-title{font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
+.ai-section-title::before{content:'';width:20px;height:2px;background:var(--gold);flex-shrink:0}
+.ai-method{display:flex;gap:14px;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:0.5px solid rgba(201,168,76,0.15)}
+.ai-method:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.ai-method-icon{width:36px;height:36px;border-radius:6px;background:rgba(201,168,76,0.12);border:0.5px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.ai-method-title{font-size:15px;font-weight:600;color:#f5f0e8;margin-bottom:0.35rem}
+.ai-method-desc{font-size:14px;color:rgba(245,240,232,0.6);line-height:1.65}
+.sidebar{position:sticky;top:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.sidebar-card{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem}
+.sidebar-title{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.sidebar-title::before{content:'';width:14px;height:2px;background:var(--gold)}
+.sidebar-link{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:6px;text-decoration:none;font-size:14px;color:var(--text-mid);transition:all .15s;border:0.5px solid transparent;margin-bottom:4px}
+.sidebar-link:last-child{margin-bottom:0}
+.sidebar-link:hover{background:var(--cream);border-color:var(--border);color:var(--navy)}
+.sidebar-link.current{background:var(--cream);border-color:var(--border-strong);color:var(--navy);font-weight:500}
+.sidebar-link-arrow{font-size:12px;color:var(--gold);opacity:0;transition:opacity .15s}
+.sidebar-link:hover .sidebar-link-arrow,.sidebar-link.current .sidebar-link-arrow{opacity:1}
+.sidebar-stat{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.sidebar-stat:last-child{border-bottom:none}
+.sidebar-stat-num{font-size:26px;font-weight:200;color:var(--navy);line-height:1}
+.sidebar-stat-label{font-size:12px;color:var(--text-muted);line-height:1.4}
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/>
+          <circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/>
+          <line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/>
+        </svg>
+      </div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <span class="header-tag">2026</span>
+  </div>
+</header>
+
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn active"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn"><span class="nav-num">05</span> Развитие</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <a href="odkrivane.html">Откриване</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Тактики за колизия</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">01</div>
+      <div>
+        <div class="page-eyebrow">Откриване · Подтема първа</div>
+        <div class="page-title">Тактики за колизия</div>
+      </div>
+    </div>
+    <div class="page-desc">Тайните споразумения при обществените поръчки са сложна форма на корупция, която подкопава честната конкуренция и изкуствено увеличава цените с около 20% — разкривана днес чрез методите на изкуствения интелект.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<main>
+  <div class="content">
+    <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Основни тактики</span></div>
+
+    <div class="tactic-block">
+      <div class="tactic-header"><span class="tactic-num">ТАКТИКА 01</span><span class="tactic-title">Ротация на офертите</span></div>
+      <div class="tactic-desc">Конкурентите се <strong>редуват при печеленето на договори</strong>, като предварително договарят кой ще подаде най-ниската оферта за конкретен проект. Останалите участници подават умишлено по-високи оферти, за да легитимират процедурата. Моделът на редуване е труден за засичане при ръчен одит, но алгоритмите за машинно обучение го идентифицират чрез анализ на исторически данни за спечелените договори по региони и типове проекти.</div>
+    </div>
+
+    <div class="tactic-block">
+      <div class="tactic-header"><span class="tactic-num">ТАКТИКА 02</span><span class="tactic-title">Покриващо наддаване</span></div>
+      <div class="tactic-desc">Участниците подават <strong>изкуствено високи или умишлено несъответстващи на условията оферти</strong>, за да създадат илюзия за истинска конкуренция, докато всъщност фаворизират предварително избран победител. Това е най-разпространената форма на bid-rigging. Системите за обработка на естествен език (NLP) засичат идентични грешки и езикови модели в офертите на различни компании — сигнал, че са подготвени от едно и също лице.</div>
+    </div>
+
+    <div class="tactic-block">
+      <div class="tactic-header"><span class="tactic-num">ТАКТИКА 03</span><span class="tactic-title">Потискане на оферти</span></div>
+      <div class="tactic-desc">Една или повече фирми се съгласяват <strong>да не подават оферти или да ги оттеглят в последния момент</strong>, за да гарантират победата на конкретен участник в заговора. Неочакваните оттегляния в края на тръжната процедура са класически червен флаг, автоматично засичан от системи като BRIAS (Южна Корея) и CMA AI Tool (Обединено кралство).</div>
+    </div>
+
+    <div class="tactic-block">
+      <div class="tactic-header"><span class="tactic-num">ТАКТИКА 04</span><span class="tactic-title">Пазарно разпределение</span></div>
+      <div class="tactic-desc">Кандидатите <strong>разделят територията, вида на продуктите или клиентската база</strong> помежду си, като се съгласяват да не се конкурират в определени сегменти. Като компенсационен механизъм, спечелилият участник предоставя подизпълнителски договори на „губещите" конкуренти. Мрежовият анализ чрез машинно обучение разкрива тези скрити вериги от подизпълнители и споделена корпоративна собственост.</div>
+    </div>
+
+    <div class="ai-section">
+      <div class="ai-section-title">Методи за детекция чрез изкуствен интелект</div>
+      <div class="ai-method">
+        <div class="ai-method-icon">📊</div>
+        <div>
+          <div class="ai-method-title">Статистически екрани</div>
+          <div class="ai-method-desc">Анализ на огромни масиви от данни за необичайна унифицираност на цените, подозрително време на подаване на офертите или нелогично големи разлики между най-ниската и следващата по стойност оферта.</div>
+        </div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">🔗</div>
+        <div>
+          <div class="ai-method-title">Мрежови и клъстерен анализ</div>
+          <div class="ai-method-desc">Разкриване на скрити връзки между участниците — споделена история на съвместни оферти, идентични метаданни в документите или вериги от подизпълнители чрез методите на машинното обучение.</div>
+        </div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">📝</div>
+        <div>
+          <div class="ai-method-title">Обработка на естествен език (NLP)</div>
+          <div class="ai-method-desc">Сканиране на тръжната документация за идентични правописни, граматически или изчислителни грешки в офертите на различни компании — сигнал за подготовка от едно и също лице.</div>
+        </div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">🧠</div>
+        <div>
+          <div class="ai-method-title">Дълбоко обучение</div>
+          <div class="ai-method-desc">Конволюционните невронни мрежи (CNN) постигат точност до <strong style="color:var(--gold-light)">95%</strong> при разпознаването на колизионни модели чрез сравняване на двойки оферти в различни аукциони.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <a href="odkrivane.html" class="bnav-btn">← Към Откриване</a>
+      <a href="flagove.html" class="bnav-btn next">Червени флагове →</a>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">В този раздел</div>
+      <a href="taktiki.html" class="sidebar-link current">Тактики за колизия <span class="sidebar-link-arrow">→</span></a>
+      <a href="flagove.html" class="sidebar-link">Червени флагове <span class="sidebar-link-arrow">→</span></a>
+      <a href="instrumenti.html" class="sidebar-link">Инструменти и примери <span class="sidebar-link-arrow">→</span></a>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Ключови данни</div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">~20%</div><div class="sidebar-stat-label">изкуствено увеличаване на цените при колизия</div></div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">95%</div><div class="sidebar-stat-label">точност на CNN моделите при детекция</div></div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">4</div><div class="sidebar-stat-label">основни тактики за bid-rigging</div></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026
+</footer>
+</body>
+</html>

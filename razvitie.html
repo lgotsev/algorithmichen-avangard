@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Развитие — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:104px 104px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-tag{font-size:13px;color:var(--gold);border:0.5px solid rgba(201,168,76,0.5);border-radius:10px;padding:4px 14px;letter-spacing:0.08em}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3.5rem 2.5rem 3rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1rem}
+.page-num{font-size:72px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(28px,4vw,44px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:17px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.6;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2.5rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem}
+.sec-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.eye-line{width:20px;height:2px;background:var(--gold)}
+.eye-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark)}
+.horizon-banner{background:var(--navy);border-radius:8px;padding:1.25rem 1.75rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem}
+.horizon-year{font-size:36px;font-weight:200;color:var(--gold);line-height:1;flex-shrink:0}
+.horizon-text{font-size:15px;color:rgba(245,240,232,0.7);line-height:1.6}
+.horizon-text strong{color:var(--gold-light)}
+.dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-bottom:2rem}
+@media(max-width:700px){.dev-grid{grid-template-columns:1fr}}
+.dev-card{background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:1.75rem;position:relative;overflow:hidden;transition:box-shadow .2s}
+.dev-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.dev-card:hover{box-shadow:0 4px 24px rgba(15,31,61,0.08)}
+.dev-icon-img{width:104px;height:104px;object-fit:contain;margin-bottom:1rem;display:block}
+.dev-num{font-size:10px;font-weight:600;color:var(--gold-dark);background:var(--gold-light);padding:2px 8px;border-radius:3px;letter-spacing:0.08em;display:inline-block;margin-bottom:0.6rem}
+.dev-title{font-size:17px;font-weight:600;color:var(--navy);margin-bottom:0.75rem;line-height:1.25}
+.dev-text{font-size:14px;color:var(--text-muted);line-height:1.75}
+.dev-text strong{color:var(--navy);font-weight:600}
+.dev-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.dev-tag{font-size:11px;padding:3px 9px;border-radius:3px;background:var(--cream);border:0.5px solid var(--border);color:var(--text-mid)}
+.themes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+@media(max-width:700px){.themes-grid{grid-template-columns:1fr}}
+.theme-card{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem;border-top:3px solid var(--gold)}
+.theme-icon{font-size:20px;margin-bottom:0.6rem}
+.theme-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:0.4rem}
+.theme-text{font-size:13px;color:var(--text-muted);line-height:1.6}
+.summary-block{background:var(--navy);border-radius:10px;padding:2rem 2.5rem;margin-bottom:2rem}
+.summary-title{font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;display:flex;align-items:center;gap:8px}
+.summary-title::before{content:'';width:16px;height:2px;background:var(--gold)}
+.summary-text{font-size:15px;color:rgba(245,240,232,0.75);line-height:1.8}
+.summary-text strong{color:var(--gold-light)}
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.home{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/><circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/><line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/></svg></div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <span class="header-tag">2026</span>
+  </div>
+</header>
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn active"><span class="nav-num">05</span> Развитие</a>
+  </div>
+</div>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Развитие</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">05</div>
+      <div>
+        <div class="page-eyebrow">Раздел пети</div>
+        <div class="page-title">Бъдещи насоки</div>
+      </div>
+    </div>
+    <div class="page-desc">Пътят към превръщането на изкуствения интелект от експериментален инструмент в основен контролен слой — толкова съществен за институционалния интегритет, колкото е киберсигурността за дигиталните мрежи.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<main>
+  <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Хоризонт до 2030</span></div>
+
+  <div class="horizon-banner">
+    <div class="horizon-year">2030</div>
+    <div class="horizon-text">Стратегическият вектор е насочен към изграждането на <strong>„инфраструктура на доверието"</strong> — проактивни системи за мониторинг, интегрирани в институционалното управление.</div>
+  </div>
+
+  <div class="dev-grid">
+
+    <div class="dev-card">
+      <img src="blockchain-icon.png" alt="Блокчейн интеграция" class="dev-icon-img">
+      <div class="dev-num">НАСОКА 01</div>
+      <div class="dev-title">Блокчейн интеграция</div>
+      <div class="dev-text">Очаква се преход от пилотни проекти към внедряване на <strong>неизменни децентрализирани регистри</strong>. Блокчейн гарантира неизменяемостта и интегритета на данните, докато изкуственият интелект проследява когнитивната динамика в реално време. Бъдещите изследвания ще се фокусират върху анализ на криптирани данни без компрометиране на конфиденциалността, както и разработване на протоколи, устойчиви на квантови изчисления.</div>
+      <div class="dev-tags">
+        <span class="dev-tag">Децентрализирани регистри</span>
+        <span class="dev-tag">Криптиран анализ</span>
+        <span class="dev-tag">Квантова устойчивост</span>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="xai-icon.png" alt="Обясним изкуствен интелект" class="dev-icon-img">
+      <div class="dev-num">НАСОКА 02</div>
+      <div class="dev-title">Обясним изкуствен интелект (XAI)</div>
+      <div class="dev-text">Критична насока е разработването на модели, които предоставят <strong>проверими логически пътища</strong> от входните данни до заключенията — задължително условие за правна допустимост на алгоритмичните изводи. Очаква се приемането на правила като предложеното Федерално правило 707 в САЩ, поставящо стандарти за надеждност на машинно генерираните доказателства в съда.</div>
+      <div class="dev-tags">
+        <span class="dev-tag">Проследими заключения</span>
+        <span class="dev-tag">Федерално правило 707</span>
+        <span class="dev-tag">Правна допустимост</span>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="evidence-icon.png" alt="Вериги от доказателства" class="dev-icon-img">
+      <div class="dev-num">НАСОКА 03</div>
+      <div class="dev-title">Вериги от доказателства</div>
+      <div class="dev-text">Генеративният изкуствен интелект ще революционизира анализа на „хартиената следа" на корупцията, <strong>свързвайки фрагментирани записи в машинночетими доказателствени вериги</strong>. Агентно-базираното моделиране (ABM) ще позволи изграждане на „дигитални близнаци" на институции — симулиране на антикорупционни политики преди реалното им въвеждане.</div>
+      <div class="dev-tags">
+        <span class="dev-tag">Генеративен изкуствен интелект</span>
+        <span class="dev-tag">Агентно моделиране</span>
+        <span class="dev-tag">Дигитални близнаци</span>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="monitoring-icon.png" alt="Мониторинг в реално време" class="dev-icon-img">
+      <div class="dev-num">НАСОКА 04</div>
+      <div class="dev-title">Мониторинг в реално време</div>
+      <div class="dev-text">Самообучаващите се алгоритми ще <strong>актуализират превантивно оценките на риска и прогнозите</strong>, изпреварвайки трансформиращите се корупционни стратегии. Системите за компютърно зрение, интегрирани с аерокосмически технологии, ще гарантират обективен надзор при мащабни капиталови проекти и разкриване на незаконосъобразни дейности.</div>
+      <div class="dev-tags">
+        <span class="dev-tag">Адаптивно обучение</span>
+        <span class="dev-tag">Сателитен мониторинг</span>
+        <span class="dev-tag">Дронове и радари</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Допълнителни хоризонти</span></div>
+
+  <div class="themes-grid">
+    <div class="theme-card">
+      <div class="theme-icon">📋</div>
+      <div class="theme-title">Национални стратегии</div>
+      <div class="theme-text">Правителствата се насърчават да приемат стратегии срещу „корупционното използване на изкуствения интелект" и да поддържат публични регистри на алгоритмите в публичния сектор.</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">🏖️</div>
+      <div class="theme-title">Регулаторни пясъчници</div>
+      <div class="theme-text">Разширяването на контролирани среди за тестване ще позволи на институциите да експериментират с нови инструменти без пълната регулаторна тежест в начален етап.</div>
+    </div>
+    <div class="theme-card">
+      <div class="theme-icon">🤝</div>
+      <div class="theme-title">Публично-частно сътрудничество</div>
+      <div class="theme-text">Оптимизирането на платформите за диалог (ОИСР) е критично за идентифициране на нови заплахи, включително алгоритмична имперсонация (deepfake) и синтетични цифрови самоличности.</div>
+    </div>
+  </div>
+
+  <div class="summary-block">
+    <div class="summary-title">Стратегическа визия</div>
+    <div class="summary-text">Векторът на развитие е насочен към трансформирането на изкуствения интелект в <strong>базов контролен компонент за институционалния интегритет</strong> — съизмерим по значение с киберсигурността. Целта надхвърля оптимизацията на разкриваемостта; тя е ориентирана към изграждане на устойчива „инфраструктура на доверието", възпрепятстваща структурно корупционните девиации.</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="ogranicheniya.html" class="bnav-btn">← Ограничения</a>
+    <a href="index.html" class="bnav-btn home">↩ Към началото</a>
+  </div>
+</main>
+<footer>Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026</footer>
+</body>
+</html>

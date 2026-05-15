@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Червени флагове — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-tag{font-size:13px;color:var(--gold);border:0.5px solid rgba(201,168,76,0.5);border-radius:10px;padding:4px 14px;letter-spacing:0.08em}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3rem 2.5rem 2.75rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none;transition:color .15s}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:0.75rem}
+.page-num{font-size:64px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(24px,3.5vw,38px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:16px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.65;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem;display:grid;grid-template-columns:1fr 300px;gap:2.5rem;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.sec-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.eye-line{width:20px;height:2px;background:var(--gold)}
+.eye-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark)}
+.cat-block{background:var(--white);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.5rem}
+.cat-header{background:var(--navy);padding:1.25rem 1.75rem;display:flex;align-items:center;gap:14px}
+.cat-num{font-size:11px;font-weight:600;color:var(--gold);background:rgba(201,168,76,0.15);padding:3px 10px;border-radius:3px;letter-spacing:0.06em;flex-shrink:0}
+.cat-title{font-size:18px;font-weight:600;color:#f5f0e8}
+.cat-body{padding:1.75rem}
+.cat-intro{font-size:15px;color:var(--text-muted);line-height:1.75;margin-bottom:1.25rem}
+.cat-intro strong{color:var(--navy);font-weight:600}
+.indicators{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.indicators{grid-template-columns:1fr}}
+.indicator{background:var(--cream);border:0.5px solid var(--border);border-radius:6px;padding:0.9rem 1rem;border-left:3px solid var(--gold)}
+.indicator-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:0.3rem}
+.indicator-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+.ai-section{background:var(--navy);border-radius:10px;padding:2rem;margin-top:0.25rem}
+.ai-section-title{font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
+.ai-section-title::before{content:'';width:20px;height:2px;background:var(--gold);flex-shrink:0}
+.ai-method{display:flex;gap:14px;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:0.5px solid rgba(201,168,76,0.15)}
+.ai-method:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.ai-method-icon{width:36px;height:36px;border-radius:6px;background:rgba(201,168,76,0.12);border:0.5px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.ai-method-title{font-size:15px;font-weight:600;color:#f5f0e8;margin-bottom:0.35rem}
+.ai-method-desc{font-size:14px;color:rgba(245,240,232,0.6);line-height:1.65}
+.note-block{background:var(--gold-light);border:0.5px solid var(--border-strong);border-radius:8px;padding:1.25rem 1.5rem;margin-top:1.5rem;display:flex;gap:12px;align-items:flex-start}
+.note-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.note-text{font-size:14px;color:var(--navy);line-height:1.7}
+.note-text strong{font-weight:600}
+.sidebar{position:sticky;top:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.sidebar-card{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem}
+.sidebar-title{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.sidebar-title::before{content:'';width:14px;height:2px;background:var(--gold)}
+.sidebar-link{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:6px;text-decoration:none;font-size:14px;color:var(--text-mid);transition:all .15s;border:0.5px solid transparent;margin-bottom:4px}
+.sidebar-link:last-child{margin-bottom:0}
+.sidebar-link:hover{background:var(--cream);border-color:var(--border);color:var(--navy)}
+.sidebar-link.current{background:var(--cream);border-color:var(--border-strong);color:var(--navy);font-weight:500}
+.sidebar-link-arrow{font-size:12px;color:var(--gold);opacity:0;transition:opacity .15s}
+.sidebar-link:hover .sidebar-link-arrow,.sidebar-link.current .sidebar-link-arrow{opacity:1}
+.sidebar-stat{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.sidebar-stat:last-child{border-bottom:none}
+.sidebar-stat-num{font-size:26px;font-weight:200;color:var(--navy);line-height:1}
+.sidebar-stat-label{font-size:12px;color:var(--text-muted);line-height:1.4}
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/>
+          <circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/>
+          <line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/>
+          <line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/>
+        </svg>
+      </div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <span class="header-tag">2026</span>
+  </div>
+</header>
+
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn active"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn"><span class="nav-num">05</span> Развитие</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <a href="odkrivane.html">Откриване</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Червени флагове</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">02</div>
+      <div>
+        <div class="page-eyebrow">Откриване · Подтема втора</div>
+        <div class="page-title">Червени флагове</div>
+      </div>
+    </div>
+    <div class="page-desc">Предупредителните знаци са специфични модели и аномалии, идентифицирани от ОИСР и водещи антикорупционни органи — основата на прехода от реактивен одит към проактивен, базиран на данни мониторинг.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<main>
+  <div class="content">
+    <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Три категории · 12 индикатора</span></div>
+
+    <div class="cat-block">
+      <div class="cat-header"><span class="cat-num">КАТЕГОРИЯ 01</span><span class="cat-title">Модели при наддаването</span></div>
+      <div class="cat-body">
+        <div class="cat-intro">Тези знаци показват <strong>необичайно разпределение на договорите</strong>, което предполага предварително споразумение между участниците в тръжната процедура.</div>
+        <div class="indicators">
+          <div class="indicator"><div class="indicator-title">Редовни победители</div><div class="indicator-desc">Един и същ доставчик печели системно в определен район или тип проекти без логично конкурентно обяснение.</div></div>
+          <div class="indicator"><div class="indicator-title">Ротация на офертите</div><div class="indicator-desc">Конкурентите изглежда се редуват при печеленето на поръчки в предвидим и повтарящ се модел.</div></div>
+          <div class="indicator"><div class="indicator-title">Подозрителни оттегляния</div><div class="indicator-desc">Участници неочаквано оттеглят офертите си в полза на конкретен кандидат или стават негови подизпълнители след търга.</div></div>
+          <div class="indicator"><div class="indicator-title">Съвместни оферти</div><div class="indicator-desc">Фирми, които обикновено се конкурират, подават обща оферта без логично икономическо обяснение.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-block">
+      <div class="cat-header"><span class="cat-num">КАТЕГОРИЯ 02</span><span class="cat-title">Аномалии в документите</span></div>
+      <div class="cat-body">
+        <div class="cat-intro">Документите разкриват, че <strong>конкурентни оферти са подготвени от едно и също лице</strong> — засичано автоматично чрез NLP алгоритми.</div>
+        <div class="indicators">
+          <div class="indicator"><div class="indicator-title">Идентични грешки</div><div class="indicator-desc">Правописни, граматически или изчислителни грешки, повтарящи се в офертите на различни фирми.</div></div>
+          <div class="indicator"><div class="indicator-title">Метаданни и IP адреси</div><div class="indicator-desc">Оферти с еднакви метаданни (автор на документа) или изпратени от един и същ IP адрес.</div></div>
+          <div class="indicator"><div class="indicator-title">Споделени ресурси</div><div class="indicator-desc">Кандидати, споделящи един и същ адрес, офис пространство или консултанти за подготовка на документите.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-block">
+      <div class="cat-header"><span class="cat-num">КАТЕГОРИЯ 03</span><span class="cat-title">Подозрително ценообразуване</span></div>
+      <div class="cat-body">
+        <div class="cat-intro">Ценовите аномалии са <strong>едни от най-ярките признаци за наличие на картел</strong> и се засичат чрез статистически екрани в реално време.</div>
+        <div class="indicators">
+          <div class="indicator"><div class="indicator-title">Необясними увеличения</div><div class="indicator-desc">Внезапно и идентично повишаване на цените от всички участници в един и същ период.</div></div>
+          <div class="indicator"><div class="indicator-title">Ниска вариация</div><div class="indicator-desc">Умишлено близки цени или необичайно голяма разлика между победителя и останалите — класически „покриващи" оферти.</div></div>
+          <div class="indicator"><div class="indicator-title">Разлика с прогнозната стойност</div><div class="indicator-desc">Печелившата оферта значително надвишава предварително изчислената от държавата стойност на проекта.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-section">
+      <div class="ai-section-title">Роля на изкуствения интелект при детекцията</div>
+      <div class="ai-method">
+        <div class="ai-method-icon">⚡</div>
+        <div><div class="ai-method-title">Автоматизиран скрининг</div><div class="ai-method-desc">Алгоритми като тези в BRIAS (Южна Корея) и инструментите на CMA (Обединено кралство) сканират хиляди поръчки в реално време за статистически и мрежови аномалии.</div></div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">📝</div>
+        <div><div class="ai-method-title">Обработка на естествен език</div><div class="ai-method-desc">Изкуственият интелект открива лингвистични червени флагове и подозрителни формулировки в неструктурирани текстове — имейли, договори и тръжна документация.</div></div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">📊</div>
+        <div><div class="ai-method-title">Рискови индекси</div><div class="ai-method-desc">Инструменти като VigIA (Колумбия) използват обективни мерки за неефективност и индекси като IRIC за откриване на липса на конкуренция и прозрачност.</div></div>
+      </div>
+      <div class="ai-method">
+        <div class="ai-method-icon">🔗</div>
+        <div><div class="ai-method-title">Мрежов анализ</div><div class="ai-method-desc">Чрез машинно обучение се разкриват скрити връзки между „конкуриращи се" фирми — споделена собственост, подизпълнителски вериги и корпоративни структури.</div></div>
+      </div>
+    </div>
+
+    <div class="note-block">
+      <div class="note-icon">⚠️</div>
+      <div class="note-text"><strong>Важна бележка:</strong> Наличието на червен флаг не е автоматично доказателство за вина. Той служи като критичен сигнал за насочване на одитните ресурси към най-високорисковите зони. Ефективността зависи критично от човешкия надзор, който да потвърди автоматично генерираните сигнали и да избегне фалшиви позитиви.</div>
+    </div>
+
+    <div class="bottom-nav">
+      <a href="taktiki.html" class="bnav-btn">← Тактики за колизия</a>
+      <a href="instrumenti.html" class="bnav-btn next">Инструменти и примери →</a>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">В този раздел</div>
+      <a href="taktiki.html" class="sidebar-link">Тактики за колизия <span class="sidebar-link-arrow">→</span></a>
+      <a href="flagove.html" class="sidebar-link current">Червени флагове <span class="sidebar-link-arrow">→</span></a>
+      <a href="instrumenti.html" class="sidebar-link">Инструменти и примери <span class="sidebar-link-arrow">→</span></a>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Ключови данни</div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">3</div><div class="sidebar-stat-label">основни категории предупредителни знаци</div></div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">12</div><div class="sidebar-stat-label">конкретни индикатора за нередности</div></div>
+      <div class="sidebar-stat"><div class="sidebar-stat-num">4</div><div class="sidebar-stat-label">метода на изкуствения интелект за детекция</div></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026
+</footer>
+</body>
+</html>

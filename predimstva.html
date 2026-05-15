@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Предимства — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-tag{font-size:13px;color:var(--gold);border:0.5px solid rgba(201,168,76,0.5);border-radius:10px;padding:4px 14px;letter-spacing:0.08em}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3.5rem 2.5rem 3rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1rem}
+.page-num{font-size:72px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(28px,4vw,44px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:17px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.6;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2.5rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem}
+.sec-eye{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.eye-line{width:20px;height:2px;background:var(--gold)}
+.eye-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-dark)}
+
+/* Cards grid */
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem}
+@media(max-width:900px){.benefits-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.benefits-grid{grid-template-columns:1fr}}
+
+.benefit-card{background:var(--white);border:0.5px solid var(--border);border-radius:10px;padding:1.75rem;position:relative;overflow:hidden;transition:box-shadow .2s}
+.benefit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.benefit-card:hover{box-shadow:0 4px 24px rgba(15,31,61,0.08)}
+.benefit-icon{font-size:28px;margin-bottom:1rem;display:block}
+.benefit-num{font-size:10px;font-weight:600;color:var(--gold-dark);background:var(--gold-light);padding:2px 8px;border-radius:3px;letter-spacing:0.08em;display:inline-block;margin-bottom:0.6rem}
+.benefit-title{font-size:17px;font-weight:600;color:var(--navy);margin-bottom:0.75rem;line-height:1.25}
+.benefit-text{font-size:14px;color:var(--text-muted);line-height:1.75}
+.benefit-text strong{color:var(--navy);font-weight:600}
+.benefit-stat{display:inline-flex;align-items:center;gap:6px;margin-top:1rem;font-size:12px;color:var(--gold-dark);font-weight:500;background:var(--gold-light);padding:4px 10px;border-radius:3px}
+
+/* Summary block */
+.summary-block{background:var(--navy);border-radius:10px;padding:2rem 2.5rem;margin-bottom:2rem;display:flex;align-items:flex-start;gap:1.5rem}
+.summary-icon{font-size:32px;flex-shrink:0;margin-top:4px}
+.summary-title{font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;display:flex;align-items:center;gap:8px}
+.summary-title::before{content:'';width:16px;height:2px;background:var(--gold)}
+.summary-text{font-size:15px;color:rgba(245,240,232,0.75);line-height:1.75}
+.summary-text strong{color:var(--gold-light)}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+@media(max-width:700px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem;border-top:3px solid var(--gold)}
+.stat-num{font-size:36px;font-weight:200;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5}
+
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.next:hover{background:var(--gold-dark);border-color:var(--gold-dark)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/><circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/><line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/></svg>
+      </div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <span class="header-tag">2026</span>
+  </div>
+</header>
+
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn active"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn"><span class="nav-num">05</span> Развитие</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Предимства</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">03</div>
+      <div>
+        <div class="page-eyebrow">Раздел трети</div>
+        <div class="page-title">Предимства</div>
+      </div>
+    </div>
+    <div class="page-desc">Изкуственият интелект действа като „мултипликатор на капацитета" в обществените поръчки.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<main>
+  <div class="sec-eye"><div class="eye-line"></div><span class="eye-label">Шест ключови предимства</span></div>
+
+  <div class="benefits-grid">
+
+    <div class="benefit-card">
+      <span class="benefit-icon">⚡</span>
+      <div class="benefit-num">ПРЕДИМСТВО 01</div>
+      <div class="benefit-title">Мащабируемост и скорост</div>
+      <div class="benefit-text">Технологията позволява сканирането на <strong>хиляди тръжни процедури и милиони транзакции за минути</strong> — обем практически невъзможен за ръчна обработка. Големите езикови модели автоматизират конвертирането на PDF файлове, извличането на имена и дати, освобождавайки човешкия ресурс за сложен анализ.</div>
+      <div class="benefit-stat">млн. записи · минути</div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-icon">🎯</span>
+      <div class="benefit-num">ПРЕДИМСТВО 02</div>
+      <div class="benefit-title">Намаляване на човешки грешки</div>
+      <div class="benefit-text">Алгоритмите превъзхождат хората в откриването на фини модели на <strong>„съмнителна несъгласуваност"</strong> и статистически аномалии в ценообразуването. Автоматизираната проверка на документи и транзакции минимизира риска от пропуски и неволни грешки, типични за ръчния одит.</div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-icon">🔭</span>
+      <div class="benefit-num">ПРЕДИМСТВО 03</div>
+      <div class="benefit-title">Проактивен надзор</div>
+      <div class="benefit-text">Вместо да разследва нарушенията след факта, изкуственият интелект <strong>предвижда рискови „горещи точки"</strong> преди сключването на договорите. Системи като бразилския бот Alice анализират тръжните документи ежедневно и генерират предупреждения за навременна намеса на одиторите.</div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-icon">💰</span>
+      <div class="benefit-num">ПРЕДИМСТВО 04</div>
+      <div class="benefit-title">Спестяване на публични средства</div>
+      <div class="benefit-text">Ранното засичане на картелни споразумения спестява значителна част от публичните средства — манипулирането на търгове <strong>изкуствено увеличава цените с около 20%</strong>. Внедряването на инструменти за преглед на правни документи може да бъде до 80% по-евтино от ръчния преглед.</div>
+      <div class="benefit-stat">~20% увеличени цени · 80% по-евтино</div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-icon">🔗</span>
+      <div class="benefit-num">ПРЕДИМСТВО 05</div>
+      <div class="benefit-title">Интеграция на различни данни</div>
+      <div class="benefit-text">Изкуственият интелект идентифицира <strong>скрити връзки между „конкуриращи се" фирми</strong> — споделена собственост, фиктивни наддавачи и подизпълнителски вериги, маскиращи конфликти на интереси. Мрежовият анализ разкрива зависимости невидими при традиционния одит.</div>
+    </div>
+
+    <div class="benefit-card">
+      <span class="benefit-icon">🛰️</span>
+      <div class="benefit-num">ПРЕДИМСТВО 06</div>
+      <div class="benefit-title">Прозрачност и независима верификация</div>
+      <div class="benefit-text">Решенията се базират на <strong>обективна информация</strong>, а не на лични интереси, ограничавайки дискреционната власт на служителите. Компютърното зрение и сателитните данни позволяват независима проверка на физическия прогрес на строителни обекти без разчитане на потенциално манипулирани местни доклади.</div>
+    </div>
+
+  </div>
+
+  <div class="summary-block">
+    <div class="summary-icon">💡</div>
+    <div>
+      <div class="summary-title">Стратегическо обобщение</div>
+      <div class="summary-text">Докато традиционните методи за надзор са реактивни, изкуственият интелект действа като <strong>„мултипликатор на капацитета"</strong> — осигурявайки по-справедлива пазарна среда и защитавайки обществения интерес чрез интелигентна верификация в реално време.</div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">~20%</div>
+      <div class="stat-label">изкуствено увеличение на цените при картел</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">80%</div>
+      <div class="stat-label">по-евтино от ръчен преглед на документи</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">млн.</div>
+      <div class="stat-label">транзакции сканирани автоматично за минути</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">6</div>
+      <div class="stat-label">ключови предимства на изкуствения интелект</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="odkrivane.html" class="bnav-btn">← Откриване</a>
+    <a href="ogranicheniya.html" class="bnav-btn next">Ограничения →</a>
+  </div>
+</main>
+
+<footer>
+  Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026
+</footer>
+</body>
+</html>
