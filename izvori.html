@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Източници — Алгоритмичният авангард</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#f5f0e8;--navy:#0f1f3d;--gold-dark:#8a5f1a;--gold:#c9a84c;--gold-light:#f0e4b8;--text:#1a2a3a;--text-mid:#3a4a5a;--text-muted:#4a5a6a;--border:#d4c9a8;--border-strong:#b8a880;--white:#ffffff;--max:1280px;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(138,95,26,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(138,95,26,0.025) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
+header{position:relative;z-index:10;background:var(--navy);border-bottom:2px solid var(--gold);padding:0 2.5rem}
+.header-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:32px;height:32px;border:1.5px solid var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:16px;height:16px}
+.logo-text{font-size:16px;font-weight:500;color:#f5f0e8;letter-spacing:0.04em}
+.header-logo{height:52px;width:auto;object-fit:contain;flex-shrink:0}
+.nav-section{position:relative;z-index:5;background:var(--white);border-bottom:0.5px solid var(--border);padding:1rem 2.5rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none;letter-spacing:0.02em}
+.nav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-btn.active{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.nav-num{font-size:12px;opacity:0.45;font-weight:500}
+.page-hero{position:relative;z-index:5;background:var(--navy);padding:3.5rem 2.5rem 3rem;border-bottom:0.5px solid var(--border)}
+.page-hero-inner{max-width:var(--max);margin:0 auto}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.breadcrumb a{font-size:13px;color:rgba(201,168,76,0.7);text-decoration:none}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{font-size:13px;color:rgba(255,255,255,0.2)}
+.breadcrumb-current{font-size:13px;color:rgba(255,255,255,0.5)}
+.page-hero-top{display:flex;align-items:flex-end;gap:1.5rem;margin-bottom:1rem}
+.page-num{font-size:72px;font-weight:200;color:rgba(201,168,76,0.2);line-height:1;letter-spacing:-0.03em}
+.page-eyebrow{font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.page-title{font-size:clamp(28px,4vw,44px);font-weight:500;color:#f5f0e8;line-height:1.1}
+.page-desc{font-size:17px;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.6;max-width:780px}
+.hero-divider{width:100%;height:1px;background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 55%,transparent 100%);margin-top:2.5rem}
+main{position:relative;z-index:5;max-width:var(--max);margin:0 auto;padding:2.5rem 2.5rem 3rem}
+
+/* Category sections */
+.cat-section{margin-bottom:3rem}
+.cat-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:2px solid var(--gold)}
+.cat-icon{font-size:20px}
+.cat-title{font-size:18px;font-weight:600;color:var(--navy)}
+.cat-count{font-size:11px;font-weight:500;color:var(--gold-dark);background:var(--gold-light);padding:3px 10px;border-radius:3px;letter-spacing:0.06em;margin-left:auto}
+
+/* Reference items */
+.ref-list{display:flex;flex-direction:column;gap:0}
+.ref-item{display:grid;grid-template-columns:48px 1fr;gap:0;border-bottom:0.5px solid var(--border);padding:1rem 0}
+.ref-item:last-child{border-bottom:none}
+.ref-num{font-size:13px;font-weight:600;color:var(--gold-dark);padding-top:2px;font-family:monospace}
+.ref-body{}
+.ref-authors{font-size:13.5px;color:var(--text);line-height:1.5;margin-bottom:2px}
+.ref-title{font-size:13.5px;font-style:italic;color:var(--navy);font-weight:500;line-height:1.5;margin-bottom:3px}
+.ref-source{font-size:12.5px;color:var(--text-muted);line-height:1.5;margin-bottom:4px}
+.ref-link{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-dark);text-decoration:none;background:var(--gold-light);padding:2px 8px;border-radius:3px;transition:background .15s}
+.ref-link:hover{background:var(--gold);color:var(--white)}
+.ref-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.ref-tag{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:500}
+.tag-peer{background:#e6f1fb;color:#185fa5}
+.tag-inst{background:#eaf3de;color:#3b6d11}
+.tag-policy{background:#eeedfe;color:#534ab7}
+.tag-legal{background:#faeeda;color:#ba7517}
+
+/* Stats bar */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2.5rem}
+@media(max-width:700px){.stats-bar{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--white);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem;border-top:3px solid var(--gold)}
+.stat-num{font-size:36px;font-weight:200;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.4}
+
+/* IEEE note */
+.ieee-note{background:var(--white);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:0.9rem 1.25rem;margin-bottom:2.5rem;font-size:13px;color:var(--text-muted);line-height:1.6}
+.ieee-note strong{color:var(--navy)}
+
+.bottom-nav{display:flex;align-items:center;justify-content:space-between;padding-top:2rem;border-top:0.5px solid var(--border)}
+.bnav-btn{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:4px;border:0.5px solid var(--border);background:var(--white);color:var(--text-mid);font-size:15px;font-weight:400;cursor:pointer;transition:all .18s;text-decoration:none}
+.bnav-btn:hover{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+.bnav-btn.home{background:var(--navy);color:#f5f0e8;border-color:var(--navy)}
+footer{position:relative;z-index:5;border-top:0.5px solid var(--border);padding:1.5rem 2.5rem;text-align:center;font-size:12px;color:var(--text-muted);letter-spacing:0.04em;background:var(--white)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#c9a84c" stroke-width="1"/><circle cx="7.5" cy="7.5" r="2" fill="#c9a84c"/><line x1="7.5" y1="1.5" x2="7.5" y2="4.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="7.5" y1="10.5" x2="7.5" y2="13.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="1.5" y1="7.5" x2="4.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/><line x1="10.5" y1="7.5" x2="13.5" y2="7.5" stroke="#c9a84c" stroke-width="0.9"/></svg></div>
+      <span class="logo-text">Алгоритмичният авангард</span>
+    </div>
+    <img src="logo.png" alt="LGotsev Knowledge & AI Engineering" class="header-logo">
+  </div>
+</header>
+<div class="nav-section">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-btn">Начало</a>
+    <a href="tehnologii.html" class="nav-btn"><span class="nav-num">01</span> Технологии</a>
+    <a href="odkrivane.html" class="nav-btn"><span class="nav-num">02</span> Откриване</a>
+    <a href="predimstva.html" class="nav-btn"><span class="nav-num">03</span> Предимства</a>
+    <a href="ogranicheniya.html" class="nav-btn"><span class="nav-num">04</span> Ограничения</a>
+    <a href="razvitie.html" class="nav-btn"><span class="nav-num">05</span> Развитие</a>
+    <a href="izvori.html" class="nav-btn active">Източници</a>
+  </div>
+</div>
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Начало</a><span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Източници</span>
+    </div>
+    <div class="page-hero-top">
+      <div class="page-num">⊕</div>
+      <div>
+        <div class="page-eyebrow">Библиографски апарат</div>
+        <div class="page-title">Референции</div>
+      </div>
+    </div>
+    <div class="page-desc">Верифицирани академични публикации, регулаторни рамки, институционални документи и описания на реални системи — форматирани по стандарта IEEE.</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<main>
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">Научни публикации (peer-reviewed)</div></div>
+    <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Регулации и правни рамки</div></div>
+    <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">ЕС институционални документи</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Инструменти и системи</div></div>
+  </div>
+
+  <div class="ieee-note">
+    <strong>Формат на цитиране:</strong> IEEE Reference Style — използван като стандарт за технически и интердисциплинарни публикации в областта на изкуствения интелект, информационните технологии и публичното управление.
+  </div>
+
+  <!-- КАТЕГОРИЯ 1: Научни публикации -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">📚</span>
+      <span class="cat-title">Научни публикации</span>
+      <span class="cat-count">9 ЗАПИСА</span>
+    </div>
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <div class="ref-num">[S1]</div>
+        <div class="ref-body">
+          <div class="ref-authors">N. AllahRakha,</div>
+          <div class="ref-title">"AI and Corruption: Legal Liability in Algorithmic Decision-Making,"</div>
+          <div class="ref-source"><em>Access to Justice in Eastern Europe</em>, vol. 8, no. 3, pp. 303–326, 2025. doi: 10.33327/AJEE-18-8.3-a000120</div>
+          <a href="https://doi.org/10.33327/AJEE-18-8.3-a000120" target="_blank" class="ref-link">↗ DOI</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Peer-reviewed</span><span class="ref-tag tag-legal">Правни рискове</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S2]</div>
+        <div class="ref-body">
+          <div class="ref-authors">J. F. Pérez, M. A. Riascos, J. Gallego, and C. Gómez,</div>
+          <div class="ref-title">"VigIA: Prioritizing Public Procurement Oversight with Machine Learning Models and Risk Indices,"</div>
+          <div class="ref-source"><em>Data & Policy</em>, Cambridge University Press, Dec. 2024. doi: 10.1017/dap.2024</div>
+          <a href="https://www.cambridge.org/core/journals/data-and-policy/article/vigia-prioritizing-public-procurement-oversight-with-machine-learning-models-and-risk-indices/34D04747A94A7099E3CD8B91221338ED" target="_blank" class="ref-link">↗ Cambridge Core</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Peer-reviewed</span><span class="ref-tag tag-inst">Инструменти</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S3]</div>
+        <div class="ref-body">
+          <div class="ref-authors">L. Potin, R. Figueiredo, V. Labatut, and C. Largeron,</div>
+          <div class="ref-title">"Detection of Fraud in Public Procurement Using Data-Driven Methods: A Systematic Mapping Study,"</div>
+          <div class="ref-source"><em>EPJ Data Science</em>, Springer Nature, 2025. doi: 10.1140/epjds/s13688-025-00569-3</div>
+          <a href="https://link.springer.com/article/10.1140/epjds/s13688-025-00569-3" target="_blank" class="ref-link">↗ Springer</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Peer-reviewed</span><span class="ref-tag tag-peer">Springer Nature</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S4]</div>
+        <div class="ref-body">
+          <div class="ref-authors">L. Potin, R. Figueiredo, V. Labatut, and C. Largeron,</div>
+          <div class="ref-title">"Pattern Mining for Anomaly Detection in Graphs: Application to Fraud in Public Procurement,"</div>
+          <div class="ref-source">in <em>Proc. European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases (ECML-PKDD)</em>, Springer, 2023.</div>
+          <a href="https://arxiv.org/pdf/2306.10857" target="_blank" class="ref-link">↗ arXiv</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">ECML-PKDD</span><span class="ref-tag tag-peer">Springer</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S5]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Authors et al.,</div>
+          <div class="ref-title">"Artificial Intelligence Approaches to Fraud Detection in Public Procurement,"</div>
+          <div class="ref-source"><em>International Journal of Sciences: Basic and Applied Research (IJSBAR)</em>, 2025.</div>
+          <a href="https://www.researchgate.net/publication/395244992_Artificial_Intelligence_Approaches_to_Fraud_Detection_in_Public_Procurement" target="_blank" class="ref-link">↗ ResearchGate</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Peer-reviewed</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S6]</div>
+        <div class="ref-body">
+          <div class="ref-authors">I. Muñoz and J. Rodríguez,</div>
+          <div class="ref-title">"Revealing the Networks Behind Corruption and Money Laundering Schemes: An Analysis of the Toledo–Odebrecht Case Using Social Network Analysis and Network Ethnography,"</div>
+          <div class="ref-source"><em>Working Paper 36</em>, Basel Institute on Governance, 2022.</div>
+          <a href="https://www.researchgate.net/publication/358180979" target="_blank" class="ref-link">↗ ResearchGate</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Academic</span><span class="ref-tag tag-legal">Мрежов анализ</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S7]</div>
+        <div class="ref-body">
+          <div class="ref-authors">D. Pescosolido and B. Rubin,</div>
+          <div class="ref-title">"Social Network Analysis as a Methodological Approach to Explore Health Systems,"</div>
+          <div class="ref-source"><em>International Journal of Environmental Research and Public Health</em>, PMC, 2018.</div>
+          <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5877056/" target="_blank" class="ref-link">↗ PMC/NCBI</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">PMC Peer-reviewed</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S8]</div>
+        <div class="ref-body">
+          <div class="ref-authors">P. Baudains, S. Johnson, and A. Braithwaite,</div>
+          <div class="ref-title">"Network Analysis in Peace and State Building: Revealing Power Elites,"</div>
+          <div class="ref-source"><em>Data & Policy</em>, Cambridge University Press, 2024.</div>
+          <a href="https://www.cambridge.org/core/journals/data-and-policy/article/network-analysis-in-peace-and-state-building-revealing-power-elites/089DCAD32C805D75E50E6643F71407E0" target="_blank" class="ref-link">↗ Cambridge Core</a>
+          <div class="ref-tags"><span class="ref-tag tag-peer">Peer-reviewed</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[S9]</div>
+        <div class="ref-body">
+          <div class="ref-authors">D. C. Louk,</div>
+          <div class="ref-title">"Buying Blind: Corruption Risk and the Erosion of Oversight in Federal AI Procurement,"</div>
+          <div class="ref-source"><em>George Washington Law Review</em>, GWU Scholarly Commons, 2024.</div>
+          <a href="https://scholarship.law.gwu.edu/cgi/viewcontent.cgi?article=3087&context=faculty_publications" target="_blank" class="ref-link">↗ GWU Scholarly Commons</a>
+          <div class="ref-tags"><span class="ref-tag tag-legal">Law Review</span><span class="ref-tag tag-peer">Academic</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- КАТЕГОРИЯ 2: Регулации и правни рамки -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">⚖️</span>
+      <span class="cat-title">Регулации и правни рамки</span>
+      <span class="cat-count">5 ЗАПИСА</span>
+    </div>
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <div class="ref-num">[R1]</div>
+        <div class="ref-body">
+          <div class="ref-authors">European Parliament and Council of the European Union,</div>
+          <div class="ref-title">"Regulation (EU) 2024/1689 Laying Down Harmonised Rules on Artificial Intelligence (Artificial Intelligence Act),"</div>
+          <div class="ref-source"><em>Official Journal of the European Union</em>, OJ L 2024/1689, Jul. 12, 2024. ELI: http://data.europa.eu/eli/reg/2024/1689/oj</div>
+          <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" class="ref-link">↗ EUR-Lex</a>
+          <div class="ref-tags"><span class="ref-tag tag-policy">EU Regulation</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[R2]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Народно събрание на Република България,</div>
+          <div class="ref-title">"Закон за защита на конкуренцията (ЗЗК) — чл. 15 и § 1, т. 5 от ДР,"</div>
+          <div class="ref-source"><em>Държавен вестник</em>, изм. и доп. 2021. [Online]. Available: https://www.cpc.bg</div>
+          <a href="https://www.cpc.bg" target="_blank" class="ref-link">↗ КЗК</a>
+          <div class="ref-tags"><span class="ref-tag tag-legal">Национален закон</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[R3]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Народно събрание на Република България,</div>
+          <div class="ref-title">"Закон за обществените поръчки (ЗОП),"</div>
+          <div class="ref-source"><em>Държавен вестник</em>, бр. 13, 2016, изм. 2024.</div>
+          <div class="ref-tags"><span class="ref-tag tag-legal">Национален закон</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[R4]</div>
+        <div class="ref-body">
+          <div class="ref-authors">European Union,</div>
+          <div class="ref-title">"Treaty on the Functioning of the European Union (TFEU) — Article 101: Prohibition of Anti-Competitive Agreements,"</div>
+          <div class="ref-source"><em>Official Journal of the European Union</em>, C 202, 2016.</div>
+          <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12016E101" target="_blank" class="ref-link">↗ EUR-Lex</a>
+          <div class="ref-tags"><span class="ref-tag tag-policy">EU Treaty</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[R5]</div>
+        <div class="ref-body">
+          <div class="ref-authors">European Parliament and Council of the European Union,</div>
+          <div class="ref-title">"Regulation (EU) 2016/679 on the Protection of Natural Persons with Regard to the Processing of Personal Data (General Data Protection Regulation — GDPR),"</div>
+          <div class="ref-source"><em>Official Journal of the European Union</em>, OJ L 119, May 4, 2016. ELI: http://data.europa.eu/eli/reg/2016/679/oj</div>
+          <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj" target="_blank" class="ref-link">↗ EUR-Lex</a>
+          <div class="ref-tags"><span class="ref-tag tag-policy">EU Regulation</span><span class="ref-tag tag-legal">Лични данни · чл. 22 · чл. 35</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- КАТЕГОРИЯ 3: ЕС институционални документи -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">🏛️</span>
+      <span class="cat-title">ЕС и международни институционални документи</span>
+      <span class="cat-count">8 ЗАПИСА</span>
+    </div>
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <div class="ref-num">[I1]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title"><em>Anti-Corruption and Integrity Outlook 2024,</em></div>
+          <div class="ref-source">OECD Publishing, Paris, 2024. doi: 10.1787/968587cd-en</div>
+          <a href="https://doi.org/10.1787/968587cd-en" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Институционален</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I2]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title"><em>Anti-Corruption and Integrity Outlook 2026 — Integrity in Public Procurement,</em></div>
+          <div class="ref-source">OECD Publishing, Paris, 2026. [Online]. Available: https://www.oecd.org/en/publications/anti-corruption-and-integrity-outlook-2026_16708b78-en</div>
+          <a href="https://www.oecd.org/en/publications/anti-corruption-and-integrity-outlook-2026_16708b78-en" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Институционален</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I3]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title">"AI in Fighting Corruption and Promoting Public Integrity,"</div>
+          <div class="ref-source">in <em>Governing with Artificial Intelligence: The State of Play and Way Forward in Core Government Functions,</em> OECD Publishing, Paris, 2025.</div>
+          <a href="https://www.oecd.org/en/publications/governing-with-artificial-intelligence_795de142-en/full-report/ai-in-fighting-corruption-and-promoting-public-integrity_60f5c50a.html" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Институционален</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I4]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title"><em>Generative AI for Anti-Corruption and Integrity in Government,</em></div>
+          <div class="ref-source">OECD Publishing, Paris, 2024. [Online]. Available: https://www.oecd.org/en/publications/generative-ai-for-anti-corruption-and-integrity-in-government_657a185a-en.html</div>
+          <a href="https://www.oecd.org/en/publications/generative-ai-for-anti-corruption-and-integrity-in-government_657a185a-en.html" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Институционален</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I5]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title">"Data Screening Tools in Competition Investigations — The Korean BRIAS System,"</div>
+          <div class="ref-source"><em>DAF/COMP/WP3(2022)5,</em> OECD, 2022. [Online]. Available: https://one.oecd.org/document/DAF/COMP/WP3(2022)5/en/pdf</div>
+          <a href="https://one.oecd.org/document/DAF/COMP/WP3(2022)5/en/pdf" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Институционален</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I6]</div>
+        <div class="ref-body">
+          <div class="ref-authors">OECD,</div>
+          <div class="ref-title"><em>OECD Guidelines for Fighting Bid Rigging in Public Procurement (2025 Update),</em></div>
+          <div class="ref-source">OECD Publishing, Paris, 2025. [Online]. Available: https://www.oecd.org/en/publications/oecd-guidelines-for-fighting-bid-rigging-in-public-procurement-2025-update_cbe05a56-en</div>
+          <a href="https://www.oecd.org/en/publications/oecd-guidelines-for-fighting-bid-rigging-in-public-procurement-2025-update_cbe05a56-en/full-report/component-5.html" target="_blank" class="ref-link">↗ OECD</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Насоки</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I7]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Transparency International,</div>
+          <div class="ref-title">"Addressing Corrupt Uses of Artificial Intelligence,"</div>
+          <div class="ref-source">Working Paper, Transparency International, 2025. [Online]. Available: https://images.transparencycdn.org/images/2025_WorkingPaper_Addressing-Corrupt-Uses-of-Artificial-Intelligence_EN.pdf</div>
+          <a href="https://images.transparencycdn.org/images/2025_WorkingPaper_Addressing-Corrupt-Uses-of-Artificial-Intelligence_EN.pdf" target="_blank" class="ref-link">↗ TI</a>
+          <div class="ref-tags"><span class="ref-tag tag-policy">Policy Paper</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[I8]</div>
+        <div class="ref-body">
+          <div class="ref-authors">P. Aarvik,</div>
+          <div class="ref-title">"Harnessing Artificial Intelligence (AI) for Anti-Corruption,"</div>
+          <div class="ref-source">U4 Anti-Corruption Resource Centre, Chr. Michelsen Institute, 2019, updated 2025. [Online]. Available: https://www.u4.no/publications/harnessing-artificial-intelligence-ai-for-anti-corruption</div>
+          <a href="https://www.u4.no/publications/harnessing-artificial-intelligence-ai-for-anti-corruption" target="_blank" class="ref-link">↗ U4</a>
+          <div class="ref-tags"><span class="ref-tag tag-policy">Policy Paper</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- КАТЕГОРИЯ 4: Инструменти и системи -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-icon">🛠️</span>
+      <span class="cat-title">Инструменти и системи</span>
+      <span class="cat-count">10 ЗАПИСА</span>
+    </div>
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <div class="ref-num">[T1]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Transparency International Ukraine,</div>
+          <div class="ref-title">"DOZORRO: AI-Powered Public Procurement Monitoring Platform,"</div>
+          <div class="ref-source"><em>OECD Observatory of Public Sector Innovation,</em> 2023. [Online]. Available: https://oecd-opsi.org/innovations/dozorro/</div>
+          <a href="https://oecd-opsi.org/innovations/dozorro/" target="_blank" class="ref-link">↗ OECD OPSI</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Украйна</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T2]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Controladoria-Geral da União (CGU),</div>
+          <div class="ref-title">"Alice — Ferramenta de Inteligência Artificial para Análise de Compras Públicas,"</div>
+          <div class="ref-source">Brazilian Federal Government, 2019. [Online]. Available: https://www.cgu.gov.br</div>
+          <a href="https://www.cgu.gov.br" target="_blank" class="ref-link">↗ CGU Brasil</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Бразилия</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T3]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Korean Fair Trade Commission (KFTC),</div>
+          <div class="ref-title">"Bid Rigging Indicator Analysis System (BRIAS),"</div>
+          <div class="ref-source">cited in OECD, <em>Fighting Bid Rigging in Public Procurement,</em> OECD Publishing, 2016. [Online]. Available: https://www.oecd.org/content/dam/oecd/en/publications/reports/2016/09/fighting-bid-rigging-in-public-procurement</div>
+          <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2016/09/fighting-bid-rigging-in-public-procurement_5cf813ae/57b223af-en.pdf" target="_blank" class="ref-link">↗ OECD PDF</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Южна Корея · от 2006</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T4]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Competition and Markets Authority (CMA),</div>
+          <div class="ref-title">"AI Tools for Detecting Anomalies in Public Procurement,"</div>
+          <div class="ref-source">UK Government, 2024. [Online]. Available: https://www.gov.uk/government/organisations/competition-and-markets-authority</div>
+          <a href="https://www.gov.uk/government/organisations/competition-and-markets-authority" target="_blank" class="ref-link">↗ CMA UK</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Обединено кралство</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T5]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Veeduría Distrital de Bogotá / Tic Tank — Universidad del Rosario / CAF,</div>
+          <div class="ref-title">"VigIA: Sistema de Inteligencia Artificial para la Supervisión de Contratos Públicos,"</div>
+          <div class="ref-source">Bogotá, Colombia, cited in J. F. Pérez et al., <em>Data & Policy,</em> Cambridge, Dec. 2024.</div>
+          <a href="https://www.cambridge.org/core/journals/data-and-policy/article/vigia-prioritizing-public-procurement-oversight-with-machine-learning-models-and-risk-indices/34D04747A94A7099E3CD8B91221338ED" target="_blank" class="ref-link">↗ Cambridge Core</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Колумбия</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T6]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Transcrime — Università Cattolica del Sacro Cuore,</div>
+          <div class="ref-title">"DATACROS: Assessing Financial Crime Risk Factors in Firms' Ownership Structure,"</div>
+          <div class="ref-source"><em>eucrim — The European Criminal Law Associations' Forum,</em> European Commission DG Home Affairs, ISF Police 2017-AG-CORRUPT-823792, Feb. 2021.</div>
+          <a href="https://eucrim.eu/events/assessing-financial-crime-risk-factors-datacros/" target="_blank" class="ref-link">↗ eucrim</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Европейски съюз</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T7]</div>
+        <div class="ref-body">
+          <div class="ref-authors">European Commission, DG Employment and DG Regional Policy,</div>
+          <div class="ref-title">"ARACHNE: Integrated IT Tool for Data Mining and Risk Scoring of EU-Funded Projects,"</div>
+          <div class="ref-source">European Commission Anti-Fraud Knowledge Centre. [Online]. Available: https://antifraud-knowledge-centre.ec.europa.eu/useful-tools_en</div>
+          <a href="https://antifraud-knowledge-centre.ec.europa.eu/useful-tools_en" target="_blank" class="ref-link">↗ EC Anti-Fraud</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Европейски съюз</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T8]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Controladoria-Geral da União (CGU) / Open Knowledge Foundation Brasil,</div>
+          <div class="ref-title">"Rosie — Bot for Automated Analysis of Brazilian Deputies' Expenditures (Operação Serenata de Amor),"</div>
+          <div class="ref-source">Brazil, cited in F. Odilla, <em>Government Information Quarterly,</em> vol. 40, no. 3, 2023.</div>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Бразилия</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T9]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Ministério Público Federal, Brazil,</div>
+          <div class="ref-title">"ContÁgil — Network Analysis Tool for the Lava Jato Investigation,"</div>
+          <div class="ref-source">Brazil, cited in F. Odilla, <em>Government Information Quarterly,</em> vol. 40, no. 3, 2023.</div>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Бразилия · Lava Jato</span></div>
+        </div>
+      </div>
+
+      <div class="ref-item">
+        <div class="ref-num">[T10]</div>
+        <div class="ref-body">
+          <div class="ref-authors">Serious Fraud Office (SFO), United Kingdom,</div>
+          <div class="ref-title">"OpenText Axcelerate — AI-Assisted Review in the Rolls Royce Investigation,"</div>
+          <div class="ref-source">UK Serious Fraud Office, 2017. [Online]. Available: https://www.sfo.gov.uk</div>
+          <a href="https://www.sfo.gov.uk" target="_blank" class="ref-link">↗ SFO UK</a>
+          <div class="ref-tags"><span class="ref-tag tag-inst">Обединено кралство</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="razvitie.html" class="bnav-btn">← Развитие</a>
+    <a href="index.html" class="bnav-btn home">↩ Към началото</a>
+  </div>
+</main>
+
+<footer>
+  Алгоритмичният авангард &nbsp;·&nbsp; Изкуственият интелект като стратегически инструмент за институционален интегритет &nbsp;·&nbsp; 2026
+</footer>
+</body>
+</html>
